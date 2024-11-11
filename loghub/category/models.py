@@ -21,6 +21,8 @@ class Category(models.Model):
     )
     slug = models.SlugField(unique=True)
     description = models.TextField()
+
+    
     def __str__(self) :
         return self.name
 
@@ -33,6 +35,9 @@ class Template(models.Model):
 
     title = models.CharField(max_length=30)
 
+
+    def __str__(self):
+        return f"title is {self.title}"
 
 class UserAccessCategory(models.Model):
     user_id = models.ForeignKey(User)
