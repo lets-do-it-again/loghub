@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 class Category(models.Model):
     parent = models.ForeignKey(
@@ -10,7 +11,14 @@ class Category(models.Model):
         related_name='children'
     )
     image = models.ImageField(upload_to='media/categories',blank=True, null=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,
+        validators = [
+            RegexValidator(
+                regex=r'^[a-zA-Z]+$',
+                message="Please use only alphabetic English characters."
+                )
+        ]
+    )
     slug = models.SlugField(unique=True)
     description = models.TextField()
     def __str__(self) :
