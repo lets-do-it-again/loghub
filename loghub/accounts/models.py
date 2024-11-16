@@ -136,6 +136,7 @@ class Professional(models.Model):
         ("MD", _("Mid")),
         ("SR", _("Senior")),
         ("LD", _("Lead")),
+        ("OT", _("Other"))
     ]
     specialty = models.CharField(_("specialty"), max_length=50)
     level = models.CharField(
