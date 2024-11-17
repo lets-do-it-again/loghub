@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import RegexValidator
+# from django.core.validators import RegexValidator
 
 class Category(models.Model):
     parent = models.ForeignKey(
@@ -11,14 +11,7 @@ class Category(models.Model):
         related_name='children'
     )
     image = models.ImageField(upload_to='media/categories',blank=True, null=True)
-    name = models.CharField(max_length=30,
-        # validators = [
-        #     RegexValidator(
-        #         regex=r'^[a-zA-Z]+$',
-        #         message="Please use only alphabetic English characters."
-        #         )
-        # ]
-    )
+    name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
     description = models.TextField()
 
@@ -27,7 +20,7 @@ class Category(models.Model):
         return self.name
 
 class Template(models.Model):
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name='templates'
@@ -62,22 +55,3 @@ class UserAccessCategory(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.category} - {self.role_type}"
-
-    @classmethod
-    def include_template_access(cls, user, category, role_type="U"):
-        """Include access for a user to a specific category."""
-        return cls.objects.get_or_create(
-            user=user,
-            category=category,
-            defaults={'role_type': role_type}
-        )
-
-    @classmethod
-    def exclude_template_access(cls, user, category):
-        """Exclude access for a user from a specific category."""
-        cls.objects.filter(user=user, category=category).delete()
-
-    @classmethod
-    def has_access_to_template(cls, user, category):
-        """Check if a user has access to a specific category."""
-        return cls.objects.filter(user=user, category=category).exists()
