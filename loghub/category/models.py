@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from loghub.accounts.models import User
 
 class Category(models.Model):
     parent = models.ForeignKey(
