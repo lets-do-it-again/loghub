@@ -1,17 +1,17 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from category.models import Category
+from category.models import CategoryDetail
 
 User = get_user_model()
 
 
 class Log(models.Model):
     description = models.TextField(max_length=200)
-    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="logs")
+    category = models.ForeignKey(CategoryDetail,on_delete=models.CASCADE,related_name="logs")
     log_key = models.SlugField(unique=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField()
-    is_public = models.BooleanField()
+    is_public = models.BooleanField(default=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="logs")
     deleted_at = models.DateTimeField()
     duration = models.DurationField(null=True, blank=True)
