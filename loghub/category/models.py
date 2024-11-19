@@ -31,7 +31,7 @@ class Category(models.Model):
     category_detail_id = models.ForeignKey(
         CategoryDetail,
         on_delete=models.CASCADE,
-        related_name='templates'
+        related_name='category'
         )
     user_id = models.ForeignKey(
         User,
