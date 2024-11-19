@@ -1,7 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.db import models
 from accounts.models import User
+
 class CategoryDetail(models.Model):
     parent = models.ForeignKey(
         'self', 
@@ -25,29 +25,30 @@ class CategoryDetail(models.Model):
 
     
     def __str__(self) :
-        return self.name
+        return self.title
 
 class Category(models.Model):
-    category_detail_id = models.ForeignKey(
+    category_detail = models.ForeignKey(
         CategoryDetail,
         on_delete=models.CASCADE,
         related_name='templates'
         )
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='UserAccessCategory'
+        related_name='categories'
         )
     title = models.CharField(max_length=30)
     description = models.CharField(max_length=200)
 
     def __str__(self):
         return f"title is {self.title}"
+
 class CategoryTemplate(models.Model):
-    category_detail_id = models.ForeignKey(
+    category_detail = models.ForeignKey(
         CategoryDetail,
         on_delete=models.CASCADE,
-        related_name='templates'
+        related_name='header'
         )
 
     title = models.CharField(max_length=30)
@@ -58,10 +59,10 @@ class CategoryTemplate(models.Model):
 
 class CategoryPermission(models.Model):
     user_ids = models.JSONField()
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name='UserAccessCategory'
+        related_name='user_access_categories'
         )
     included_childs = models.JSONField()
     excluded_childs = models.JSONField()
