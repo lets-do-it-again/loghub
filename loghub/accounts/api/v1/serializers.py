@@ -1,0 +1,129 @@
+from rest_framework import serializers
+from accounts.models import Professional
+from . import validators
+from accounts.models import User
+from .utils import add_professionals
+
+
+class ProfessionalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professional
+        fields = ["id", "specialty", "level"]
+
+
+class AdminUserDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        exclude = ["password", "last_login", "created_at", "updated_at"]
+
+
+class BasicUserDetailSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=128, required=False, write_only=True)
+    new_password = serializers.CharField(
+        max_length=128, required=False, write_only=True
+    )
+    class Meta:
+        model = User
+        fields = [
+            "phone",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "image_file",
+            "professional",
+            "password",
+            "new_password",
+        ]
+        read_only_fields = ["phone"]
+
+    def update(self, instance, validated_data):
+        new_password = validated_data.pop("new_password", None)
+        password = validated_data.pop("password", None)
+
+        validators.validate_profile(new_password, password, self.request)
+
+        if new_password:
+            instance.set_password(new_password)
+
+        instance.save()
+        return instance
+
+
+class AdminUserListSerializer(serializers.ModelSerializer):
+    detail_user = serializers.HyperlinkedIdentityField(
+        view_name="accounts:api-v1:user_detail"
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "detail_user",
+            "id",
+            "phone",
+            "username",
+            "email",
+            "is_active",
+            "is_superuser",
+        ]
+
+
+class AdminUserCreateSerializer(serializers.ModelSerializer):
+    professionals = ProfessionalSerializer(many=True, required=False)
+    professional_ids = serializers.ListField(
+        child=serializers.IntegerField(), required=False, default=[]
+    )
+
+    class Meta:
+        model = User
+        exclude = [
+            "password",
+            "user_permissions",
+            "groups",
+            "professional",
+            "last_login",
+        ]
+
+    def create(self, validated_data):
+        professionals_data = validated_data.pop("professionals", [])
+        professional_ids = validated_data.pop("professional_ids", [])
+
+        user = User.objects.create(**validated_data)
+        add_professionals(user, professionals_data, professional_ids)
+        return user
+
+
+class BasicUserCreateSerializer(serializers.ModelSerializer):
+    professionals = ProfessionalSerializer(many=True, required=False)
+    professional_ids = serializers.ListField(
+        child=serializers.IntegerField(), required=False, default=[]
+    )
+    password = serializers.CharField(max_length=128, write_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "phone",
+            "username",
+            "email",
+            "password",
+            "professionals",
+            "professional_ids",
+        ]
+
+    def validate(self, attrs):
+        request = self.context.get("request", None)
+        password = attrs.get("password")
+        validators.validate_new_password(password, request)
+
+        return attrs
+
+    def create(self, validated_data):
+        professionals_data = validated_data.pop("professionals", [])
+        professional_ids = validated_data.pop("professional_ids", [])
+
+        user = User.objects.create_user(**validated_data)
+        add_professionals(user, professionals_data, professional_ids)
+
+        return user
