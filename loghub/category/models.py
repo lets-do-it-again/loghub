@@ -25,7 +25,7 @@ class CategoryDetail(models.Model):
 
     
     def __str__(self) :
-        return self.name
+        return self.title
 
 class Category(models.Model):
     category_detail_id = models.ForeignKey(
