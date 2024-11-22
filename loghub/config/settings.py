@@ -40,7 +40,12 @@ INSTALLED_APPS = [
 
     'logs',
     'category',
-    "accounts.apps.AccountsConfig"
+    "accounts.apps.AccountsConfig",
+
+    # Package
+    'rest_framework',
+    'django_filters',
+
 
 ]
 
