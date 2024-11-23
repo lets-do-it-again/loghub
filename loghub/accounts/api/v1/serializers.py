@@ -12,7 +12,6 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
 
 class AdminUserDetailSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         exclude = ["password", "last_login", "created_at", "updated_at"]
@@ -23,6 +22,7 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
     new_password = serializers.CharField(
         max_length=128, required=False, write_only=True
     )
+
     class Meta:
         model = User
         fields = [
@@ -42,7 +42,8 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
         new_password = validated_data.pop("new_password", None)
         password = validated_data.pop("password", None)
 
-        validators.validate_profile(new_password, password, self.request)
+        request = self.context.get("request")
+        validators.validate_profile(new_password, password, request)
 
         if new_password:
             instance.set_password(new_password)
@@ -127,3 +128,16 @@ class BasicUserCreateSerializer(serializers.ModelSerializer):
         add_professionals(user, professionals_data, professional_ids)
 
         return user
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "phone",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "image_file"
+        ]
