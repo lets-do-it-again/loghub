@@ -1,9 +1,5 @@
 from rest_framework.generics import GenericAPIView
-from rest_framework import mixins, status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
+from rest_framework import mixins
 from . import serializers
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
@@ -50,22 +46,3 @@ class AdminUserCreateView(mixins.CreateModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
-
-
-class UserDetailView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        user = request.user
-        serializer = serializers.UserDetailSerializer(user)
-        return Response(serializer.data)
-
-class UpdateUserView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        serializer = serializers.BasicUserDetailSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
