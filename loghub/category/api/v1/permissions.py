@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from .models import CategoryPermission
+from category.models import CategoryPermission
 
 class IsCategoryUser(BasePermission):
     """

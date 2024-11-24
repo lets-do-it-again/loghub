@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LogSerializer
 from django.utils import timezone
-from category.permissions import IsCategoryUser
+from category.api.v1.permissions import IsCategoryUser
 
 class CreateLogView(generics.CreateAPIView):
     queryset = Log.objects.all()
