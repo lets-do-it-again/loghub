@@ -4,6 +4,9 @@ from . import serializers
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
 from .permissions import IsOwnerOrAdminPermission, IsAdminOrUnAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from . import filterset
 
 User = get_user_model()
 
@@ -27,6 +30,16 @@ class UserListView(mixins.ListModelMixin, GenericAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.AdminUserListSerializer
     permission_classes = [permissions.IsAdminUser]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = filterset.CustomUserFilter
+    search_fields = [
+        "phone",
+        "email",
+        "username",
+        "first_name",
+        "last_name",
+        "professional__specialty",
+    ]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

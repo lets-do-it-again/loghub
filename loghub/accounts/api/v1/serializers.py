@@ -52,14 +52,14 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
 
 
 class AdminUserListSerializer(serializers.ModelSerializer):
-    detail_user = serializers.HyperlinkedIdentityField(
-        view_name="accounts:api-v1:user_detail"
-    )
+    # detail_user = serializers.HyperlinkedIdentityField(
+    #     view_name="accounts:api-v1:user_detail"
+    # )
 
     class Meta:
         model = User
         fields = [
-            "detail_user",
+            # "detail_user",
             "id",
             "phone",
             "username",
