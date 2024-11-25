@@ -164,3 +164,6 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
+
+# django-filter
+FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'
