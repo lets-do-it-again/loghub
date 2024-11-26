@@ -62,15 +62,13 @@ class UserDetailView(APIView):
         return Response(serializer.data)
 
 
-
-
-
 class UserUpdateView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.BasicUserDetailSerializer
 
     def get_object(self):
         return self.request.user
+    
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response({"detail": "Authentication credentials were not provided."},
