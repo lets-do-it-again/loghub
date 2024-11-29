@@ -51,22 +51,19 @@ class UserDetailView(APIView):
 
     def get(self, request, username=None):
         user = get_object_or_404(User, username=username)
-        serializer = serializers.UserDetailSerializer(user)
+        serializer = serializers.BasicUserDetailSerializer(user)
         return Response(serializer.data)
 
 
 class UserUpdateView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.BasicUserDetailSerializer
-    def get_object(self):
-        return self.request.user
-    
-    def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."},
-                            status=status.HTTP_401_UNAUTHORIZED)
 
-        serializer = self.get_serializer(self.get_object(), data=request.data, partial=True,
+    def get_user(self):
+        return self.request.user
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_user(), data=request.data, partial=True,
                                          context={'request': request})
 
         if serializer.is_valid():
