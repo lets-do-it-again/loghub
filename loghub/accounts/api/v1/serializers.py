@@ -63,21 +63,6 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
-
-
-
-    # def create(self, validated_data):
-    #     professional_data = validated_data.pop('professional')
-    #     user = User.objects.create(**validated_data)
-    #
-    #     for prof in professional_data:
-    #         professional = Professional.objects.create(
-    #             specialty=prof['specialty'],
-    #             level=prof['level']
-    #         )
-    #         user.professional.add(professional)
-
-
 class AdminUserListSerializer(serializers.ModelSerializer):
     detail_user = serializers.HyperlinkedIdentityField(
         view_name="accounts:api-v1:user_detail"
@@ -154,16 +139,3 @@ class BasicUserCreateSerializer(serializers.ModelSerializer):
         add_professionals(user, professionals_data, professional_ids)
 
         return user
-
-
-class UserDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            "phone",
-            "username",
-            "email",
-            "first_name",
-            "last_name",
-            "image_file"
-        ]

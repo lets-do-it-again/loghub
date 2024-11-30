@@ -37,7 +37,6 @@ class UserListView(mixins.ListModelMixin, GenericAPIView):
         return self.list(request, *args, **kwargs)
 
 
- 
 class AdminUserCreateView(mixins.CreateModelMixin, GenericAPIView):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = serializers.AdminUserCreateSerializer
@@ -46,7 +45,7 @@ class AdminUserCreateView(mixins.CreateModelMixin, GenericAPIView):
         return self.create(request, *args, **kwargs)
 
 
-class UserDetailView(APIView):
+class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, username=None):
