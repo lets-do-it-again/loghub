@@ -60,7 +60,7 @@ class CategoryTemplate(models.Model):
 class CategoryPermission(models.Model):
     user_ids = models.JSONField(null=True, blank=True)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="UserAccessCategory"
+        Category, on_delete=models.CASCADE, related_name="User_access_category"
     )
     included_childs = models.JSONField(null=True, blank=True)
     excluded_childs = models.JSONField(null=True, blank=True)

@@ -15,5 +15,12 @@ urlpatterns = [
         views.UpdateCategoryDetail.as_view(),
         name="update_category_detail",
     ),
-    path("update/<int:pk>/", views.UpdateCategoryView.as_view(), name="update_category"),
+    path(
+        "update/<int:pk>/", views.UpdateCategoryView.as_view(), name="update_category"
+    ),
+    path(
+        "permission/update/<int:pk>/",
+        views.UpdateCategoryPermission.as_view(),
+        name="update_category_permission",
+    ),
 ]

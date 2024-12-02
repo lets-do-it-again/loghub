@@ -36,9 +36,7 @@ class IsCategoryDetailOwnerOrAdmin(BasePermission):
 
         user = request.user
 
-
         category_detail = get_object_or_404(CategoryDetail, pk=category_detail_pk)
-
 
         if user.is_staff:
             return True
@@ -51,3 +49,18 @@ class IsCategoryDetailOwnerOrAdmin(BasePermission):
 
         category_object = Category.objects.get(category_detail=category_detail_root)
         return category_object.user == user
+
+
+class IsCategoryPermissionOwnerOrAdmin(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        category_permission_pk = view.kwargs.get("pk")
+        user = request.user
+
+        category_permission = get_object_or_404(
+            CategoryPermission, pk=category_permission_pk
+        )
+        if user.is_staff:
+            return True
+        
+        category = category_permission.User_access_category.all().first()
+        return category.user == request.user
