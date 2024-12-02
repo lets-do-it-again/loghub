@@ -23,4 +23,9 @@ urlpatterns = [
         views.UpdateCategoryPermission.as_view(),
         name="update_category_permission",
     ),
+    path(
+        "detail/<int:pk>/",
+        views.CategoryDetailReportView.as_view(),
+        name="category_report",
+    ),
 ]

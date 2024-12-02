@@ -20,7 +20,7 @@ class UpdateCategoryDetail(mixins.UpdateModelMixin, GenericAPIView):
     serializer_class = serializers.CategoryDetailSerializer
     permission_classes = [
         drf_permissions.IsAuthenticated,
-        permissions.IsCategoryDetailOwnerOrAdmin,
+        permissions.CanModifyCategoryDetailOrAdmin,
     ]
 
     def post(self, request, *args, **kwargs):
@@ -39,7 +39,22 @@ class UpdateCategoryView(mixins.UpdateModelMixin, GenericAPIView):
 class UpdateCategoryPermission(mixins.UpdateModelMixin, GenericAPIView):
     queryset = models.CategoryPermission.objects.all()
     serializer_class = serializers.CategoryPermissionSerializer
-    permission_classes = [drf_permissions.IsAuthenticated,permissions.IsCategoryPermissionOwnerOrAdmin]
+    permission_classes = [
+        drf_permissions.IsAuthenticated,
+        permissions.IsCategoryPermissionOwnerOrAdmin,
+    ]
 
     def post(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
+
+class CategoryDetailReportView(mixins.RetrieveModelMixin, GenericAPIView):
+    queryset = models.CategoryDetail.objects.all()
+    serializer_class = serializers.CategoryDetailSerializer
+    permission_classes = [
+        drf_permissions.IsAuthenticated,
+        permissions.CanViewCategoryDetailOrAdmin
+    ]
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
