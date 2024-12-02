@@ -50,8 +50,12 @@ class UserProfileView(APIView):
 
     def get(self, request, username=None):
         user = get_object_or_404(User, username=username)
-        serializer = serializers.BasicUserDetailSerializer(user)
-        return Response(serializer.data)
+        if request.user != user:
+            user_data = serializers.BasicUserDetailSerializer(user).data
+            user_data.pop('phone', None)
+        else:
+            user_data = serializers.BasicUserDetailSerializer(user).data
+        return Response(user_data, status=status.HTTP_200_OK)
 
 
 class UserUpdateView(UpdateAPIView):
