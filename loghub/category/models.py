@@ -38,8 +38,8 @@ class Category(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="UserAccessCategory"
     )
-    title = models.CharField(max_length=30)
-    description = models.CharField(max_length=200)
+    title = models.CharField(max_length=30, blank=True)
+    description = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return f"title is {self.title}"
@@ -58,12 +58,12 @@ class CategoryTemplate(models.Model):
 
 
 class CategoryPermission(models.Model):
-    user_ids = models.JSONField()
+    user_ids = models.JSONField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="UserAccessCategory"
     )
-    included_childs = models.JSONField()
-    excluded_childs = models.JSONField()
+    included_childs = models.JSONField(null=True, blank=True)
+    excluded_childs = models.JSONField(null=True, blank=True)
     PERMISSION_TYPE_CHOICES = [
         ("None", "None"),
         ("Anyone", "Anyone"),
@@ -71,7 +71,7 @@ class CategoryPermission(models.Model):
         ("Keyword", "Keyword"),
         ("Mix", "Mix"),
     ]
-    keyword = models.SlugField(blank=True, null=True, unique=True)
+    keyword = models.UUIDField(unique=True, null=True, blank=True)
     permission_type = models.CharField(
         max_length=10,
         choices=PERMISSION_TYPE_CHOICES,
