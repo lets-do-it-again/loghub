@@ -3,12 +3,13 @@ from rest_framework import permissions
 
 class IsOwnerOrAdminPermission(permissions.BasePermission):
     """
-    Object-level permission to allow access only to the owner of the object
-    or admin users. Assumes the model instance has an 'id' attribute.
+    Custom permission to grant access to object owners or admin users.
 
-    - Admin users (is_staff) can always access any object.
-    - Active non-admin users can only access their own object.
-    - Inactive users are denied access to any object.
+    Rules:
+    - Admin users (`is_staff=True`) have access to all objects.
+    - Active, non-admin users can only access objects they own.
+    - Inactive users (`is_active=False`) are denied access.
+    - Assumes the object has a `user` or `id` attribute to check ownership.
     """
 
     def has_object_permission(self, request, view, obj):
@@ -17,5 +18,8 @@ class IsOwnerOrAdminPermission(permissions.BasePermission):
 
         if not request.user.is_active:
             return False
+
+        if hasattr(obj, "user"):
+            return obj.user == request.user
 
         return obj.id == request.user.id
