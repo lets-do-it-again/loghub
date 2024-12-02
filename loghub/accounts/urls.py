@@ -4,7 +4,6 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-
 from accounts.api.v1.views import UserUpdateView, UserRegisterView, UserProfileView, UserLoginView
 
 urlpatterns = [
