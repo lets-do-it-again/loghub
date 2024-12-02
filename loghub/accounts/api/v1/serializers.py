@@ -1,8 +1,46 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from accounts.models import Professional
 from . import validators
 from accounts.models import User
 from .utils import add_professionals
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ["phone", "username", "email", "password"]
+
+    def create(self, validated_data):
+        phone = validated_data.pop("phone")
+        username = validated_data.pop("username")
+        password = validated_data.pop("password")
+        email = validated_data.pop("email", None)
+
+        user = User.objects.create_user(
+            phone=phone,
+            username=username,
+            password=password,
+            email=email
+        )
+
+        return user
+
+class LoginSerializer(serializers.Serializer):
+    phone = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        phone = data.get("phone")
+        password = data.get("password")
+
+        user = authenticate(phone=phone, password=password)
+        if not user:
+            raise serializers.ValidationError("Invalid username or password")
+
+        data["user"] = user
+        return data
 
 
 class ProfessionalSerializer(serializers.ModelSerializer):
@@ -139,3 +177,37 @@ class BasicUserCreateSerializer(serializers.ModelSerializer):
         add_professionals(user, professionals_data, professional_ids)
 
         return user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from rest_framework import serializers
+from .models import Classroom
+
+
+class ClassroomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: Classroom
+        fields = "__all__"
+
+    def validate_capacity(self, value):
+        if value < 5:
+            raise serializers.ValidationError("error")
+        return value
+
+    def validate_area(self, value):
+        if value >= 0:
+            raise serializers.ValidationError("error")
+        return value

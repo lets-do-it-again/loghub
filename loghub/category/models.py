@@ -57,6 +57,7 @@ class CategoryTemplate(models.Model):
         return f"title is {self.title}"
 
 class CategoryPermission(models.Model):
+    # title
     user_ids = models.JSONField()
     category_id = models.ForeignKey(
         Category,

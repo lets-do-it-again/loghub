@@ -149,5 +149,3 @@ class Professional(models.Model):
     class Meta:
         verbose_name = _("Professional")
         verbose_name_plural = _("Professionals")
-
-
