@@ -30,6 +30,7 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
+            "description",
             "image_file",
             "professional",
             "password",
