@@ -1,5 +1,5 @@
 from rest_framework import generics
-from ..models import Log
+from ..models import Log,SourceLog
 from ..serializers import LogSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -62,3 +62,13 @@ class AddSourceToLogView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(log=log_instance)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+class LatestSourcesByCategoryView(generics.ListAPIView):
+    serializer_class = SourceLogSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        category_detail_id = self.kwargs['category_detail_id']
+        return SourceLog.objects.filter(log__category_id=category_detail_id).order_by('-id')[:5]
+    
