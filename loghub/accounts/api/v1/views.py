@@ -3,7 +3,8 @@ from rest_framework import mixins
 from . import serializers
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
-from .permissions import IsOwnerOrAdminPermission, IsAdminOrUnAuthenticated
+from .permissions import IsAdminOrUnAuthenticated
+from utils.permissions import IsOwnerOrAdminPermission
 
 User = get_user_model()
 

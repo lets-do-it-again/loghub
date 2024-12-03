@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LogSerializer
 from django.utils import timezone
-from category.permissions import IsCategoryUser
+from category.api.v1.permissions import IsCategoryUser
+
 from django.contrib.auth import get_user_model
 from category.models import Category,CategoryPermission
 
