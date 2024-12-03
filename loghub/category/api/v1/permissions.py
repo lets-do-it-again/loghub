@@ -37,7 +37,6 @@ class IsCategoryUser(BasePermission):
                 return request.user.id in permission.user_ids
             elif permission.permission_type == "Keyword":
                 return request.data.get("Keyword") == permission.keyword
-            # Check Mix permission
             else:
                 return True
 
