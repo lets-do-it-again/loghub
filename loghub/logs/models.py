@@ -3,8 +3,66 @@ from django.contrib.auth import get_user_model
 from category.models import CategoryDetail
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from category.models import *
 
 User = get_user_model()
+
+
+from django.db import models
+from django.db.models import Q
+
+class LogManager(models.Manager):
+    def filter_logs(self, request):
+        queryset = self.get_queryset()
+
+        accessible_categories = self.get_accessible_categories(request)
+
+        if accessible_categories:
+            categories = CategoryDetail.objects.filter(id__in=accessible_categories)
+            all_related_categories = categories.get_descendants(include_self=True)
+            queryset = queryset.filter(category__in=all_related_categories, is_public=True)
+
+        username = request.query_params.get('username', '').strip()
+        if username:
+            try:
+                user = User.objects.get(username=username)
+                queryset = queryset.filter(user=user)
+            except User.DoesNotExist:
+                pass
+
+        start_time = request.query_params.get('start_time')
+        if start_time:
+            queryset = queryset.filter(start_time__gte=start_time)
+
+        end_time = request.query_params.get('end_time')
+        if end_time:
+            queryset = queryset.filter(end_time__lte=end_time)
+
+        log_key = request.query_params.get('log_key')
+        if log_key:
+            queryset = queryset.filter(log_key=log_key)
+
+        return queryset
+
+    def get_accessible_categories(self, request):
+        user = request.user
+        keyword = request.query_params.get('keyword')
+
+        conditions = Q()
+
+        if user.is_authenticated:
+            conditions |= Q(permission_type="User", user_ids__in=[user.id])
+        
+        conditions |= Q(permission_type="Anyone")
+
+        if keyword:
+            conditions |= Q(permission_type="keyword", keyword=keyword)
+
+        accessible_categories = CategoryPermission.objects.filter(conditions).distinct().values_list('category', flat=True)
+
+        return list(accessible_categories)
+
+
 
 
 class Log(models.Model):
@@ -29,6 +87,7 @@ class Log(models.Model):
         super().save(*args, **kwargs)
 
     
+    objects = LogManager()
 
 
 class SourceLog(models.Model):
