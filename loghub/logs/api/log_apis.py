@@ -4,13 +4,10 @@ from ..serializers import LogSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from ..serializers import LogSerializer
+from ..serializers import LogSerializer,SourceLogSerializer
 from django.utils import timezone
 from category.api.v1.permissions import IsCategoryUser
-from django.db.models import Q
-
 from django.contrib.auth import get_user_model
-from category.models import Category,CategoryPermission,CategoryDetail
 
 User = get_user_model()
 
@@ -23,7 +20,6 @@ class CreateLogView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-# about Apiview and generics
 class UpdateEndTimeView(generics.UpdateAPIView):
     """API endpoint to update the end_time of a log entry."""
     queryset = Log.objects.all()
@@ -50,3 +46,19 @@ class LogSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         return Log.objects.filter_logs(self.request)
+
+
+class AddSourceToLogView(generics.GenericAPIView):
+    serializer_class = SourceLogSerializer
+    permission_classes = [IsAuthenticated, IsCategoryUser]
+
+    def post(self, request, log_id):
+        try:
+            log_instance = Log.objects.get(pk=log_id)
+        except Log.DoesNotExist:
+            return Response({"detail": "Log not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(log=log_instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
