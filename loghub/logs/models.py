@@ -4,6 +4,7 @@ from category.models import CategoryDetail
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from category.models import *
+import uuid
 
 User = get_user_model()
 
@@ -82,8 +83,9 @@ class Log(models.Model):
     def save(self, *args, **kwargs):
         if self.end_time and self.start_time:
             self.duration = self.end_time - self.start_time
-        # else:
-        #     self.duration = None
+
+        self.log_key = str(uuid.uuid4()) 
+
         super().save(*args, **kwargs)
 
     
