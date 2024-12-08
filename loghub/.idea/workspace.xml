@@ -4,12 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b93b6318-a1dc-4293-88af-4078c4d8da2d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/accounts/api/v1/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/api/v1/serializers.py" afterDir="false" />
+    <list default="true" id="b93b6318-a1dc-4293-88af-4078c4d8da2d" name="Changes" comment="fix: account: remove custom login">
+      <change afterPath="$PROJECT_DIR$/category/api/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/api/v1/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/api/v1/permissions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/api/v1/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/api/v1/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/api/v1/validators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/api/v1/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/migrations/0002_alter_category_description_alter_category_title_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/migrations/0003_alter_categorypermission_keyword.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/migrations/0004_alter_categorypermission_category.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/category/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/api/log_apis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/api/v1/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/api/v1/permissions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/api/v1/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/api/v1/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/category/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/category/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/category/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/category/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/category/permissions.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/logs/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/migrations/0002_alter_log_deleted_at.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/migrations/0003_alter_log_start_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/migrations/0004_alter_log_end_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/migrations/0005_log_duration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/logs/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/logs/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/logs/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../requirements/base.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../requirements/base.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,24 +64,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.__init__.executor&quot;: &quot;Run&quot;,
-    &quot;Python.urls.executor&quot;: &quot;Run&quot;,
-    &quot;Python.views.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;fb-register-login-v0.1&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Shahab/Downloads/testdjangoquera&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.__init__.executor": "Run",
+    "Python.urls.executor": "Run",
+    "Python.views.executor": "Run",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging fb-register-login-v0.1",
+    "last_opened_file_path": "C:/Users/Shahab/Downloads/testdjangoquera",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "Errors",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="class CreateUserSerializer(serializers.ModelSerializer):     password = serializers.CharField(write_only=True)      class Meta:         model = User         fieldsets = [&quot;phone&quot;, &quot;username&quot;, &quot;email&quot;, &quot;password&quot;]          def create(self, validated_data):             phone = validated_data.pop(&quot;phone&quot;, None)             username = validated_data.pop(&quot;username&quot;, None)             email = validated_data.pop(&quot;email&quot;, None)             password = validated_data.pop(&quot;password&quot;, None)" />
@@ -85,6 +114,7 @@
       <workItem from="1733386356222" duration="201000" />
       <workItem from="1733598394395" duration="1666000" />
       <workItem from="1733638681904" duration="4454000" />
+      <workItem from="1733659531390" duration="1364000" />
     </task>
     <servers />
   </component>
@@ -101,6 +131,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix: account: remove custom login" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: account: remove custom login" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

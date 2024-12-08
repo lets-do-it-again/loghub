@@ -4,11 +4,12 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from utils.permissions import IsOwnerOrAdminPermission
 from . import serializers
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
-from .permissions import IsOwnerOrAdminPermission, IsAdminOrUnAuthenticated
-
+from .permissions import  IsAdminOrUnAuthenticated
 User = get_user_model()
 
 
@@ -47,6 +48,14 @@ class UserListView(mixins.ListModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class BasicUserCreateView(mixins.CreateModelMixin, GenericAPIView):
+    permission_classes = [IsAdminOrUnAuthenticated]
+    serializer_class = serializers.BasicUserCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
 class AdminUserCreateView(mixins.CreateModelMixin, GenericAPIView):
