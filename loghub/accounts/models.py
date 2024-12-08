@@ -89,6 +89,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     professional = models.ManyToManyField(
         "Professional", related_name="user", verbose_name=_("professional"), blank=True
     )
+    description = models.TextField(
+        _("description"), null=True, blank=True)
 
     is_active = models.BooleanField(_("is active"), default=True)
     is_superuser = models.BooleanField(_("is superuser"), default=False)
@@ -149,3 +151,5 @@ class Professional(models.Model):
     class Meta:
         verbose_name = _("Professional")
         verbose_name_plural = _("Professionals")
+
+
