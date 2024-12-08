@@ -13,8 +13,10 @@ class LogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Log
-        fields = ['description', 'category', 'log_key', 'start_time', 'end_time', 'is_public', 'source']
-
+        fields = ['id','description', 'category', 'log_key', 'start_time', 'end_time', 'is_public', 'source']
+        extra_kwargs = {
+            'log_key': {'read_only': True},
+        }
     def create(self, validated_data):
         source_data = validated_data.pop('source', [])
         log = Log.objects.create(**validated_data)
