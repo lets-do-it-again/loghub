@@ -1,4 +1,3 @@
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.generics import GenericAPIView, get_object_or_404, UpdateAPIView
 from rest_framework import mixins, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -24,26 +23,6 @@ class UserRegisterView(APIView):
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-class UserLoginView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = serializers.LoginSerializer(data=request.data)
-
-        if serializer.is_valid():
-            user = serializer.validated_data.get("user")
-            if not user:
-                return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-            refresh = RefreshToken.for_user(user)
-            response_data = {
-                'ok': 'true',
-                'tokens': {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token)
-                }
-            }
-            return Response(response_data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDetailView(mixins.RetrieveModelMixin, GenericAPIView):
