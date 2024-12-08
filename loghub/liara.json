@@ -1,0 +1,9 @@
+{
+    "app": "loghub",
+    "disks": [
+        {
+          "name": "loghubdisk",
+          "mountTo": "assets"
+        }
+      ] 
+}

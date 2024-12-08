@@ -1,0 +1,21 @@
+name: CD-Liara
+on:
+  push:
+    branches:
+      - deployment-v0.1
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: update-liara
+        env:
+          LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+        run: |
+          npm i -g @liara/cli@5
+          cd loghub
+          liara deploy --debug --app="loghub" --api-token="$LIARA_TOKEN" --no-app-logs --port=8000
