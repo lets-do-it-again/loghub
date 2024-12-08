@@ -6,10 +6,8 @@ from django.contrib.auth.models import (
 )
 
 from django.utils.translation import gettext_lazy as _
-
 from django.core.exceptions import ValidationError
 from . import validations
-
 
 
 class MyUserManager(BaseUserManager):
@@ -41,7 +39,6 @@ class MyUserManager(BaseUserManager):
 
         if "email" in extra_fields:
             user.email = self.normalize_email(extra_fields["email"])
-
 
         user.set_password(password)
         user.save(using=self._db)
@@ -76,7 +73,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(
         _("phone"), max_length=11, unique=True, validators=[validations.validate_phone]
     )
-
     email = models.EmailField(_("email address"), max_length=255, null=True, blank=True)
     first_name = models.CharField(_("first name"), max_length=50, null=True, blank=True)
     last_name = models.CharField(_("last name"), max_length=50, null=True, blank=True)
@@ -89,6 +85,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     professional = models.ManyToManyField(
         "Professional", related_name="user", verbose_name=_("professional"), blank=True
     )
+    description = models.TextField(
+        _("description"), null=True, blank=True)
 
     is_active = models.BooleanField(_("is active"), default=True)
     is_superuser = models.BooleanField(_("is superuser"), default=False)
@@ -149,5 +147,3 @@ class Professional(models.Model):
     class Meta:
         verbose_name = _("Professional")
         verbose_name_plural = _("Professionals")
-
-

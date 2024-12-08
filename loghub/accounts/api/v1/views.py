@@ -1,12 +1,29 @@
-from rest_framework.generics import GenericAPIView
-from rest_framework import mixins
+from rest_framework.generics import GenericAPIView, get_object_or_404, UpdateAPIView
+from rest_framework import mixins, status
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from utils.permissions import IsOwnerOrAdminPermission
 from . import serializers
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
-from .permissions import IsAdminOrUnAuthenticated
-from utils.permissions import IsOwnerOrAdminPermission
-
+from .permissions import  IsAdminOrUnAuthenticated
 User = get_user_model()
+
+
+class UserRegisterView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = serializers.RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            response_data = {
+                'message': 'User registered successfully!',
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class UserDetailView(mixins.RetrieveModelMixin, GenericAPIView):
@@ -47,3 +64,33 @@ class AdminUserCreateView(mixins.CreateModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, username=None):
+        user = get_object_or_404(User, username=username)
+        if request.user != user:
+            user_data = serializers.BasicUserDetailSerializer(user).data
+            user_data.pop('phone', None)
+        else:
+            user_data = serializers.BasicUserDetailSerializer(user).data
+        return Response(user_data, status=status.HTTP_200_OK)
+
+
+class UserUpdateView(UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.BasicUserDetailSerializer
+
+    def get_user(self):
+        return self.request.user
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_user(), data=request.data, partial=True,
+                                         context={'request': request})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

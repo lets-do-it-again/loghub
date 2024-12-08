@@ -12,7 +12,6 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
 
 class AdminUserDetailSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         exclude = ["password", "last_login", "created_at", "updated_at"]
@@ -20,9 +19,9 @@ class AdminUserDetailSerializer(serializers.ModelSerializer):
 
 class BasicUserDetailSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, required=False, write_only=True)
-    new_password = serializers.CharField(
-        max_length=128, required=False, write_only=True
-    )
+    new_password = serializers.CharField(max_length=128, required=False, write_only=True)
+    professional = ProfessionalSerializer(many=True, required=True)
+
     class Meta:
         model = User
         fields = [
@@ -31,6 +30,7 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
+            "description",
             "image_file",
             "professional",
             "password",
@@ -42,10 +42,23 @@ class BasicUserDetailSerializer(serializers.ModelSerializer):
         new_password = validated_data.pop("new_password", None)
         password = validated_data.pop("password", None)
 
-        validators.validate_profile(new_password, password, self.request)
+        request = self.context.get("request")
+        validators.validate_profile(new_password, password, request)
 
         if new_password:
             instance.set_password(new_password)
+
+        professional_data = validated_data.pop("professional", None)
+        if professional_data is not None:
+            instance.professional.clear()
+            for prof_data in professional_data:
+                prof_instance, _ = Professional.objects.update_or_create(
+                    **prof_data
+                )
+                instance.professional.add(prof_instance)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
 
         instance.save()
         return instance
