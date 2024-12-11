@@ -1,12 +1,9 @@
-from django_filters.rest_framework.backends import DjangoFilterBackend
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import GenericAPIView, get_object_or_404, UpdateAPIView, RetrieveAPIView
-from rest_framework import mixins, status, generics
+from rest_framework import mixins, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
-
 from utils.permissions import IsOwnerOrAdminPermission
 from . import serializers
 from rest_framework import permissions
