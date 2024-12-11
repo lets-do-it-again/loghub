@@ -178,3 +178,14 @@ class BasicUserCreateSerializer(serializers.ModelSerializer):
         add_professionals(user, professionals_data, professional_ids)
 
         return user
+
+
+class SearchUserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "image_file",
+            "username",
+            "first_name",
+            "last_name",
+        ]
