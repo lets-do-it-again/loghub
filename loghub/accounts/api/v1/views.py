@@ -1,5 +1,7 @@
-from rest_framework.generics import GenericAPIView, get_object_or_404, UpdateAPIView
-from rest_framework import mixins, status
+from django_filters.rest_framework.backends import DjangoFilterBackend
+from rest_framework.exceptions import NotFound
+from rest_framework.generics import GenericAPIView, get_object_or_404, UpdateAPIView, RetrieveAPIView
+from rest_framework import mixins, status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -94,3 +96,19 @@ class UserUpdateView(UpdateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserSearchView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.SearchUserSerializers
+
+    def get_queryset(self):
+        return User.objects.all()
+
+    def get_object(self):
+        username = self.request.query_params.get('username', None)
+        if not username:
+            raise NotFound(detail="Username query parameter is required.")
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise NotFound(detail="No user matches the given username.")

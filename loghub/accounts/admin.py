@@ -35,6 +35,7 @@ class UserAdmin(BaseUserAdmin):
                     "created_at",
                     "updated_at",
                     "image_file",
+                    "description"
                 ),
             },
         ),
